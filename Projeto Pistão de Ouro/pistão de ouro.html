@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pistão De Ouro - Peças Antigas</title>
+    <style>
+
+       
+        
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #383838;
+            
+        }
+
+        header {
+            background-image: url(banner.header.png);
+            background-repeat: no-repeat;
+            background-size: 100%;
+            padding: 200px 0;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #444;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        
+        }
+
+        nav li {
+            margin: 0;
+        }
+
+        nav a {
+            display: block;
+            padding: 15px 25px;
+            color: white;
+            text-decoration: none;
+        }
+
+        nav a:hover {
+            background-color: #666;
+        }
+
+        .content {
+            padding: 30px;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        .section {
+            display: none;
+        
+        }
+
+        :target {
+            display: block;
+        }
+
+        .default-section {
+            display: block;
+        }
+
+        h3 {
+            color: gold;
+            font-size: 20px;
+        }
+
+        h2 {
+            color: goldenrod;
+            text-decoration-color: goldenrod;
+            font-weight: 1000;
+            font-size: 35px;
+        }
+
+        p {
+            color: whitesmoke;
+            font-size: large;
+            
+        }
+
+        .peca {
+            background-color: #767676;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #888;
+            border-radius: 25px;
+            border: 10px ridge goldenrod;
+        }
+
+        .peca img{
+            width: 20%;
+            margin-left: 650px;
+            margin-top: -80px;
+            
+
+        }
+
+        .peca h1{
+            margin-left: 650px;
+            color: white;
+            font-style: oblique;
+        }
+
+        .ouro{
+            font-weight: 1000;
+            color: gold;
+        }
+
+        footer {
+        background: #000;
+        background-size: 100%;
+        color: #d4af37; /* Dourado */
+        padding: 40px 20px 20px;
+        font-family: Arial, sans-serif;
+        }
+
+        .footer-container {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        max-width: 1200px;
+        margin: auto;
+        border-bottom: 1px solid #d4af37;
+        padding-bottom: 20px;
+        }
+
+        .footer-section {
+        flex: 1;
+        min-width: 250px;
+        margin: 15px;
+        }
+
+        .footer-section h3 {
+        color: #fff;
+        margin-bottom: 15px;
+        border-left: 4px solid #d4af37;
+        padding-left: 8px;
+        font-style: oblique;
+        }
+
+        .footer-section p,
+        .footer-section a {
+        color: #d4af37;
+        text-decoration: none;
+        transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+        color: #fff;
+        }
+
+        .footer-bottom {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 14px;
+        color: #aaa;
+        }
+
+        .peca button {
+      margin-top: 10px;
+      padding: 10px 12px;
+      background: green;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .peca button:hover {
+      background: #005fa3;
+    }
+
+    .carrinho {
+      border: 2px solid #333;
+      padding: 20px;
+      border-radius: 8px;
+    }
+
+    .carrinho ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .carrinho li {
+      margin: 10px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .carrinho li button {
+      background: red;
+      color: white;
+      border: double;
+      border-radius: 4px;
+      padding: 4px 8px;
+      cursor: pointer;
+    }
+
+    .carrinho li button:hover {
+      background: darkred;
+    }
+
+    .total {
+      font-weight: bold;
+      margin-top: 15px;
+      font-size: 18px;
+    }
+    #finalizar {
+      margin-top: 20px;
+      padding: 10px 16px;
+      background: green;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .carrinhofinal{
+    text-align: center;
+    }
+
+
+    .bemvindo{
+        text-align: center;
+    }
+    
+    </style>
+
+ <script>
+    let carrinho = [];
+
+    
+
+    function adicionarAoCarrinho(nome, preco) {
+      carrinho.push({ nome, preco });
+      atualizarCarrinho();
+      alert(`✅ ${nome} foi adicionado ao carrinho!\n💲 Preço: R$ ${preco.toFixed(2).replace('.', ',')}`);
+    
+    }
+
+    
+
+    function removerItem(index) {
+      carrinho.splice(index, 1);
+      atualizarCarrinho();
+    }
+
+    function atualizarCarrinho() {
+      const lista = document.getElementById("lista-carrinho");
+      const totalEl = document.getElementById("total");
+
+      lista.innerHTML = "";
+
+      let total = 0;
+      carrinho.forEach((item, index) => {
+        total += item.preco;
+       const li = document.createElement("li");
+       li.innerHTML = `${item.nome} - R$ ${item.preco.toFixed(2).replace(".", ",")} <button onclick="removerItem(${index})">x</button>`;         
+        lista.appendChild(li);
+      });
+
+      totalEl.textContent = `Total: R$ ${total.toFixed(2).replace(".", ",")}`;
+    }
+    function finalizarCompra() {
+      if (carrinho.length === 0) {
+        alert("Seu carrinho está vazio!");
+        return;
+      }
+
+      let resumo = "Resumo da sua compra:\n\n";
+      let total = 0;
+
+      carrinho.forEach(item => {
+        resumo += `- ${item.nome}: R$ ${item.preco.toFixed(2).replace(".", ",")}\n`;
+        total += item.preco;
+      });
+
+      resumo += `\nTotal: R$ ${total.toFixed(2).replace(".", ",")}\n\nObrigado pela sua compra! `;
+
+      alert(resumo);
+
+      // Limpa o carrinho
+      carrinho = [];
+      atualizarCarrinho();
+    }
+  </script>    
+
+
+
+</head>
+<body>
+
+    <header>
+       
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#inicio">Início</a></li></div>    
+            <li><a href="#ford">Ford</a></li>
+            <li><a href="#chevrolet">Chevrolet</a></li>
+            <li><a href="#volkswagen">Volkswagen</a></li>
+            <li><a href="#fiat">Fiat</a></li>
+            <li><a href="#BMW">BMW</a></li>
+            <li><a href="#honda">Honda</a></li>
+            <li><a href="#carrinho">Carrinho</a></li></div>    
+        </ul>
+    </nav>
+
+   
+
+    <div class="content">
+
+        <div class="bemvindo">
+            <div id="inicio" class="section">
+            <strong><h2>Bem-vindo a Pistão de Ouro!!</h2></strong>
+            <strong><p>Escolha oque deseja procurar acima!</p></strong>
+            <br><br>
+            <strong><p>Esta é uma loja online onde você encontrará os melhores <br>
+                preços e a melhor qualidade naquilo que procura.</p></strong>
+            <br><br><br><br><br><br><br><br><br><br><br>  
+            </div>
+        </div>
+       
+
+        <!-- FORD -->
+        <div id="ford" class="section">
+            <h2>Peças para Ford</h2>
+
+            <div class="peca">
+                <h3>Carburador Ford Galaxie 500</h3>
+                <p>Peça original, restaurada e pronta para uso.</p> 
+                <br>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeXKXiso21WBzxlNvaLdhDttKVlRC28anRzg&s">
+                <span><h1>R$ 1.391,49</h1></span>
+                <button onclick="adicionarAoCarrinho('Carburador Ford Galaxie 500', 1391,49)">Adicionar</button>
+                 
+            </div>
+
+            <div class="peca">
+                <h3>Retrovisor Ford Maverick</h3>
+                <p>Modelo esportivo cromado. Compatível com anos 1973-1977.</p>
+                <br>
+                <img src="https://http2.mlstatic.com/D_NQ_NP_889360-MLB43870923728_102020-O-par-espelho-retrovisor-ford-maverick-1973-ate-1979.webp">
+                <span><h1>R$ 889,99</h1></span>
+                <button onclick="adicionarAoCarrinho('Retrovisor Ford Maverick', 889,99)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Grade dianteira Ford Corcel II</h3>
+                <p>Em ótimo estado, pronta para pintura.</p>
+                <br>
+                <img src="https://cdn.awsli.com.br/300x300/289/289606/produto/91879358/7df2dc6e18.jpg">
+                <span><h1>R$ 810,00</h1></span>
+                <button onclick="adicionarAoCarrinho('Grade dianteira Ford Corcel II', 810,0)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Lanterna traseira Ford Belina</h3>
+                <p>Par de lanternas para modelos até 1980.</p>
+                 <br>
+                <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcSo1Ow4P5hT_viGepmkNkZhmGNFeHCxnR9D0f241oDNq6zKZ8uchQu4h5GQYfDGnHA3iCO2pR0D0p0l9r-7H6rRPDW8hEGGGU0xr5AouuDq023fhBspthuTpRr1sQaOXiqWOYTgX2s&usqp=CAc">
+                <span><h1>R$ 170,99</h1></span>
+                <button onclick="adicionarAoCarrinho('Lanterna traseira Ford Belina', 170,99)">Adicionar</button>
+            </div>
+
+           
+        </div>
+
+        <!-- CHEVROLET -->
+        <div id="chevrolet" class="section">
+            <h2>Peças para Chevrolet</h2>
+
+            <div class="peca">
+                <h3>Parachoque Chevrolet Opala</h3>
+                <p>Em aço inox, alta resistência à corrosão.</p>
+                 <br>
+                <img src="https://s3-sa-east-1.amazonaws.com/fabiani-ecommerce/product_images/images/000/037/823/original/parachoque-dianteiro-opala-75-79-cromado.jpg?1445039319">
+                <span><h1>R$ 399,99</h1></span>
+                <button onclick="adicionarAoCarrinho('Parachoque Chevrolet Opala', 399,99)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Grade dianteira Chevette</h3>
+                <p>Grade original para Chevette SL 1982.</p>
+                 <br>
+                <img src="https://img.elecar.com.br/media/KJ80830_1.jpg">
+                <span><h1>R$ 248,49</h1></span>
+                <button onclick="adicionarAoCarrinho('Grade dianteira Chevette', 248,49)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Volante original Opala Diplomata</h3>
+                <p>Volante em bom estado, com acabamento em madeira.</p>
+                <br>
+                <img src="https://http2.mlstatic.com/D_NQ_NP_672580-MLB71456464291_092023-O.webp">
+                 <span><h1>R$ 950,99</h1></span>
+                 <button onclick="adicionarAoCarrinho('Volante original Opala Diplomata', 950,99)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Tanque de combustível Chevrolet Caravan</h3>
+                <p>Metal, com capacidade de 65L</p>
+                <br>
+                <img src="https://imageswscdn.wslojas.com.br/files/28085/MED_tanque-de-combustivel-em-metal-capacidade-65-litros-gm-chevrolet-caravan-1983-a-1991-18220241616.jpg">
+                <span><h1>R$ 542,45</h1></span>
+                <button onclick="adicionarAoCarrinho('Tanque de combustível Chevrolet Caravan', 542,45)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+               <h3>Conjunto de escapamento Monza GM</h3>
+                <p>Ótima qualidade, de 1992 a 1997</p>
+                <br>
+                <img src="https://images.tcdn.com.br/img/img_prod/476243/escapamento_conjunto_intermediario_monza_1985_a_1997_76848001_1_9fe4552a1618781e115cd0de5d28cd8a.jpg">
+                <span><h1>R$ 262,23</h1></span>
+                <button onclick="adicionarAoCarrinho('Conjunto de escapamento Monza GM', 262,23)">Adicionar</button>
+            </div>
+        </div>
+
+        <!-- VOLKSWAGEN -->
+        <div id="volkswagen" class="section">
+            <h2>Peças para Volkswagen</h2>
+
+            <div class="peca">
+                <h3>Farol Fusca 1980</h3>
+                <p>Faróis da frente, em desconto.</p>
+                <br>
+                 <img src="https://http2.mlstatic.com/D_NQ_NP_925766-MLB80968062412_122024-O-par-farol-fusca-78-79-80-81-82-83-84-85-86-lente-vidro.webp">
+                <span><h1>R$ 283,79</h1></span>
+                <button onclick="adicionarAoCarrinho('Farol Fusca', 283,79)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Volante Kombi corujinha, até 1975</h3>
+                <p>Volante personalizado.</p>
+                <br>
+                <img src="https://images.tcdn.com.br/img/img_prod/1222387/volante_kombi_corujinha_ate_1975_marfim_c_aro_7699_1_a68f4337f941a5097a94a5f8c9ba12e6.jpg">
+                <span><h1>R$ 759,49</h1></span>
+                <button onclick="adicionarAoCarrinho('Volante Kombi corujinha', 759,49)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Retrovisor Fusca 1979</h3>
+                <p>Estilo original, metalizado.</p>
+                <br>
+                 <img src="https://http2.mlstatic.com/D_775439-MLB75370390011_032024-C.jpg">
+                <span><h1>R$ 205,00</h1></span>
+                <button onclick="adicionarAoCarrinho('Retrovisor Fusca', 205,0)">Adicionar</button>
+            </div>
+
+             <div class="peca">
+                <h3>Jogo 4 rodas Aro 14</h3>
+                <p>Eportivas, para Brasília, Fusca, Variant, Gurgel.</p>
+                <br>
+                 <img src="https://images.tcdn.com.br/img/img_prod/674422/jogo_de_4_rodas_aro_14_esportivo_volkswagen_brasilia_fusca_variant_puma_gurgel_buggy_7417_2_dc2406517cade5ce10398921e3c62eb4.jpg">
+                <span><h1>R$ 1.435,48</h1></span>
+                <button onclick="adicionarAoCarrinho('Jogo 4 rodas Aro 14', 1435,48)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Alavanca de câmbio para Fusca</h3>
+                <p>Personalizado, bola preta com as marchas.</p>
+                <br>
+                <img src="https://http2.mlstatic.com/D_693680-MLB31095719237_062019-C.jpg">
+                 <span><h1>R$ 119,29</h1></span>
+                 <button onclick="adicionarAoCarrinho('Alavanca de câmbio para Fusca', 119,29)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Motor para Kombi e Fusca</h3>
+                <p>A Ar 1600.</p>
+                <br>
+                <img src="https://http2.mlstatic.com/D_NQ_NP_857245-MLB82675746836_032025-O.webp">
+                 <span><h1>R$ 817,49</h1></span>
+                 <button onclick="adicionarAoCarrinho('Motor para Kombi e Fusca', 817,49)">Adicionar</button>
+            </div>
+        </div>
+
+            <!-- FIAT -->
+        <div id="fiat" class="section">
+            <h2>Peças para Fiat</h2>
+
+
+            <div class="peca">
+                <h3>Volante Fiat 128</h3>
+                <p>Volante clássico.</p>
+                <br>
+                <img src="https://http2.mlstatic.com/D_Q_NP_2X_615571-MLA47520078645_092021-T.webp">
+                 <span><h1>R$ 1.113,45 </h1></span>
+                 <button onclick="adicionarAoCarrinho('Volante Fiat 128', 1113,45)">Adicionar</button>
+            </div>
+
+        
+            <div class="peca">
+                <h3>Retrovisor Fiat Uno 1984</h3>
+                <p>Retrovisor interno original do modelo de fábrica.</p>
+                <br>
+                <img src="https://img.olx.com.br/images/14/140502397528916.jpg">
+                 <span><h1>R$ 54,90 </h1></span>
+                 <button onclick="adicionarAoCarrinho('Retrovisor Fiat Uno', 54,90)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Carburador Fiat 147</h3>
+                <p>Peça revisada, pronta para instalação.</p>
+                <br>
+                <img src="https://images.tcdn.com.br/img/img_prod/1193741/carburador_fiat_147_uno_spazio_1977_1300_alcool_weber_190_716_1_4bbd27aaecdf35e338db4c11050b5dac.jpeg">
+                 <span><h1>R$ 890,14 </h1></span>
+                 <button onclick="adicionarAoCarrinho('Carburador Fiat 147', 890,14)">Adicionar</button>
+            </div>
+
+
+            <div class="peca">
+                <h3>Farol dianteiro Fiat Fiorino 1995</h3>
+                <p>Par de faróis de vidro, modelo original.</p>
+                <br>
+                <img src="https://http2.mlstatic.com/D_NQ_NP_938006-MLB74084685732_012024-O-farol-uno-fiorino-2005-2006-2007-2008-2009-2010-11-12-13-14.webp">
+                 <span><h1>R$ 412,00</h1></span>
+                 <button onclick="adicionarAoCarrinho('Farol dianteiro Fiat Fiorino', 412,0)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Parachoque de plástico traseiro Fiat 147</h3>
+                <p>Parachoque original, 1987.</p>
+                <br>
+                <img src="https://imageswscdn.wslojas.com.br/files/28085/MED_produto-parachoque-plastico-traseiro-fiat-147-spazio-1983-a-1987-2318.jpg">
+                 <span><h1>R$ 200,19</h1></span>
+                 <button onclick="adicionarAoCarrinho('Parachoque de plástico traseiro Fiat 147', 200,19)">Adicionar</button>
+            </div>
+        </div>
+
+                <!-- BMW -->
+        <div id="BMW" class="section">
+            <h2>Peças para BMW</h2>
+
+           
+
+            <div class="peca">
+                <h3>Volante BMW E30</h3>
+                <p>Volante esportivo original, com logo BMW central.</p>
+                <br>
+                <img src="https://m.media-amazon.com/images/I/41G0DRp4wUL.jpg">
+                 <span><h1>R$ 560,78</h1></span>
+                 <button onclick="adicionarAoCarrinho('Volante BMW E30', 560,78)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Farol BMW E36 </h3>
+                <p>1992, Bmw Angel Eyes DRL Leds </p>
+                <br>
+                <img src="https://dcdn-us.mitiendanube.com/stores/001/639/441/products/bmw-e36-h11-bc5358976c54222e1216208450109633-1024-1024.webp">
+                 <span><h1>R$ 3.200,97</h1></span>
+                 <button onclick="adicionarAoCarrinho('Farol BMW E36', 3200,97)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Rodas BMW 2002</h3>
+                <p>Jogo de rodas modelo vintage, Aro 17.</p>
+                <br>
+                <img src="https://leandrinistore.vteximg.com.br/arquivos/ids/410246-900-900/Roda-BMW-Vintage-Prata.png?v=638119926203600000">
+                 <span><h1>R$ 1.865,98</h1></span>
+                 <button onclick="adicionarAoCarrinho('Rodas BMW ', 1865,98)">Adicionar</button>
+            </div>
+
+
+            <div class="peca">
+                <h3>Banco dianteiro BMW 2002</h3>
+                <p>Banco clássico revestido em couro legítimo.</p>
+                <br>
+                <img src="https://http2.mlstatic.com/D_NQ_NP_836602-MLB82131711355_012025-O.webp">
+                 <span><h1>R$ 1.216,45</h1></span>
+                 <button onclick="adicionarAoCarrinho('Banco dianteiro BMW', 1216,45)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Carburador BMW E21</h3>
+                <p>Peça revisada, compatível com motores clássicos.</p>
+                <br>
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQPT0zENqR7eSgfbZXyTFeffluNMavQplpriw&s">
+                 <span><h1>R$ 817,13</h1></span>
+                 <button onclick="adicionarAoCarrinho('Carburador BMW E21', 817,13)">Adicionar</button>
+            </div>
+        </div>
+
+
+        <!-- HONDA -->
+        <div id="honda" class="section">
+            <h2>Peças para Honda</h2>
+
+           
+
+            <div class="peca">
+                <h3>Cilíndro mestre freio Honda Civic</h3>
+                <p>Modelo 1995, original.</p>
+                <br>
+                <img src="https://cdn.iset.io/assets/47318/produtos/1014/1781x.jpg">
+                 <span><h1>R$ 654,69</h1></span>
+                 <button onclick="adicionarAoCarrinho('Cilíndro mestre freio Honda Civic', 654,69)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Jogo de rodas Honda Civic</h3>
+                <p>Anos 2000, Aro 15.</p>
+                <br>
+                <img src="https://http2.mlstatic.com/D_NQ_NP_895151-MLB87055306981_072025-O-jogo-de-roda-aro-15-civic-ex-2001-2002-2003-2004-2005-l893.webp">
+                 <span><h1>R$ 1.723,45</h1></span>
+                 <button onclick="adicionarAoCarrinho('Jogo de rodas Honda Civic', 1723,45)">Adicionar</button>
+            </div>
+
+            <div class="peca">
+                <h3>Farol Honda Civic 1998</h3>
+                <p>Faróis dianteiros originais com lente de vidro.</p>
+                <br>
+                <img src="https://images.tcdn.com.br/img/img_prod/599029/farol_honda_civic_1996_1997_1998_5997_1_8af62070a26e9e01a3f4317b2289a96f_20250826152351.jpg">
+                 <span><h1>R$ 342,16</h1></span>
+                 <button onclick="adicionarAoCarrinho('Farol Honda Civic', 342,16)">Adicionar</button>
+            </div>
+
+            
+
+            <div class="peca">
+                <h3>Retrovisor Honda Civic 1995-2000</h3>
+                <p>Retrovisor elétrico, original Civic.</p>
+                <br>
+                <img src="https://images.tcdn.com.br/img/img_prod/659062/retrovisor_civic_1996_1997_1998_1999_2000_eletrico_6331_1_5c2e4efaa23907be92f9fca7311cc18d_20230522150231.jpg">
+                 <span><h1>R$ 134,98 </h1></span>
+                 <button onclick="adicionarAoCarrinho('Retrovisor Honda Civic', 134,98)">Adicionar</button>
+            </div>
+
+
+            <div class="peca">
+                <h3>Grade dianteira Honda Civic 1999</h3>
+                <p>Grade de metal, pronta para instalação.</p>
+                <br>
+                <img src="https://encrypted-tbn0.gstatic.com/shopping?q=tbn:ANd9GcRjSjmxRy4cTS83cpaHPcNK68cMgqUY_Tg_wXQwj86v4NY4JODl8SpSzRL4XiwGoduLIu5qrWFFWq5UIlUb4nX46okGoZI7Sz4Tn7BHLKnlAAn3njwWMoeLoQ">
+                 <span><h1>R$ 1.453,76</h1></span>
+                 <button onclick="adicionarAoCarrinho('Grade dianteira Honda Civic', 1453,76)">Adicionar</button>
+            </div>
+
+
+               
+            </div>
+        </div>
+
+
+            <div class="carrinhofinal">
+                <div id="carrinho" class="section">
+                    <h2>Total da compra </h2>
+                    <div id="carrinho">
+                    <h3>Carrinho de Compras</h3>
+                    <ul style="list-style-type: none;" id="lista-carrinho"></ul>
+                    <p id="total">Total: R$ 0,00</p>
+                    <button id="finalizar" onclick="finalizarCompra()">Finalizar Compra</button>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </div>
+             </div>
+    </div>
+
+   
+
+                    <footer>
+                    <div class="footer-container">
+                        <div class="footer-section">
+                        <h3>Localização</h3>
+                        <p>Av. Caio Augusto, 100 - Centro</p>
+                        <p>Belo-Horizonte-MG</p>
+                        </div>
+
+                        <div class="footer-section">
+                        <h3>Contato</h3>
+                        <p>Email: pistaodeouro_ofc@gmail.com</p>
+                        <p>Telefone: (31) 92765-9806</p>
+                        </div>
+
+                        <div class="footer-section">
+                        <h3>Redes Sociais</h3>
+                        <p><a href="#">Instagram</a></p>
+                        <p><a href="#">Facebook</a></p>
+                        <p><a href="#">LinkedIn</a></p>
+                        </div>
+                    </div>
+
+                    <div class="footer-bottom">
+                        <p>© 2025 Pistão de Ouro. Paixão eterna pelo melhor!!</p>
+                    </div>
+                    </footer>
+
+
+
+
+</body>
+</html>
